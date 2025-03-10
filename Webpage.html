@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supply Chain Management System</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Supply Chain Management System</h1>
+
+    <form method="post">
+        <label for="choice">Choose an action:</label>
+        <select name="choice" id="choice">
+            <option value="1">Add Product</option>
+            <option value="2">Update Product Stock</option>
+            <!-- Add more options for other choices -->
+        </select>
+
+        <div id="add-product" style="display:none;">
+            <label for="product_id">Product ID:</label>
+            <input type="text" id="product_id" name="product_id">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name">
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01">
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Inventory</h2>
+    <table>
+        <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.split(',')[0].split(':')[1].strip() }}</td>
+            <td>{{ product.split(',')[1].split(':')[1].strip() }}</td>
+            <td>{{ product.split(',')[2].split(':')[1].strip() }}</td>
+            <td>{{ product.split(',')[3].split(':')[1].strip() }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Orders</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.split(',')[0].split(':')[1].strip() }}</td>
+            <td>{{ order.split(',')[1].split(':')[1].strip() }}</td>
+            <td>{{ order.split(',')[2].split(':')[1].strip() }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Suppliers</h2>
+    <ul>
+        {% for supplier in suppliers %}
+        <li>{{ supplier }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Supplier Hierarchy</h2>
+    <ul>
+        {% for region, suppliers in supplier_hierarchy.items() %}
+        <li>{{ region }}
+            <ul>
+                {% for supplier in suppliers %}
+                <li>{{ supplier }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Deliveries</h2>
+    <table>
+        <tr>
+            <th>Delivery ID</th>
+            <th>Order ID</th>
+            <th>Delivery Date</th>
+            <th>Priority</th>
+        </tr>
+        {% for delivery in deliveries %}
+        <tr>
+            <td>{{ delivery.split(',')[0].split(':')[1].strip() }}</td>
+            <td>{{ delivery.split(',')[1].split(':')[1].strip() }}</td>
+            <td>{{ delivery.split(',')[2].split(':')[1].strip() }}</td>
+            <td>{{ delivery.split(',')[3].split(':')[1].strip() }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        var choiceSelect = document.getElementById("choice");
+        var addProductDiv = document.getElementById("add-product");
+
+        choiceSelect.addEventListener("change", function() {
+            if (choiceSelect.value === "1") {
+                addProductDiv.style.display = "block";
+            } else {
+                addProductDiv.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
